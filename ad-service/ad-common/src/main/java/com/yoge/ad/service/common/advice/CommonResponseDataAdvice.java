@@ -29,6 +29,7 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        // 当controller中某个类或方法被自定义的@IgnoreResponseAdvice注解标识时代表不受commonResponse影响
         if (returnType.getDeclaringClass().isAnnotationPresent(IgnoreResponseAdvice.class) || returnType.getMethod().isAnnotationPresent(IgnoreResponseAdvice.class)) {
             return false;
         }
