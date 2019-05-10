@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -30,5 +31,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         objectMapper.registerModule(new JavaTimeModule());
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter(objectMapper);
         converters.add(messageConverter);
+        // 添加自定义的string转换
+        StringToCommonResponseHttpMessageConverter stringToCommonResponseHttpMessageConverter = new StringToCommonResponseHttpMessageConverter();
+        converters.add(stringToCommonResponseHttpMessageConverter);
     }
 }
