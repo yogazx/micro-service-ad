@@ -1,1 +1,26 @@
+spring:
+  application:
+    name: ad-sponsor
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false # 控制在懒加载的时候, 如果应用程序中对一些bean 执行过懒加载, 如果为true可能会对找不到一些Bean的配置而出现错误
+    properties:
+      hibernate.format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    hikari:
+      password: 1212wasd
+      username: root
+    url: jdbc:mysql://localhost:3307/ad_service?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
+server:
+  port: 7000
+  servlet:
+    context-path: /ad-sponsor
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/

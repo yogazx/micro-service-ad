@@ -18,6 +18,7 @@
         <module>ad-search</module>
         <module>ad-sponsor</module>
         <module>ad-common</module>
+        <module>ad-dumps</module>
     </modules>
 
 </project>

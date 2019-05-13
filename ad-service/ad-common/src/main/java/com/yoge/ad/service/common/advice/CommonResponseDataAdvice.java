@@ -1,10 +1,14 @@
 package com.yoge.ad.service.common.advice;
 
+import com.yoge.ad.service.common.annotation.IgnoreResponseAdvice;
+import com.yoge.ad.service.common.enums.ResponseCode;
+import com.yoge.ad.service.common.vo.CommonResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
@@ -13,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @author You Jia Ge
  * Created Time 2019/5/9
  */
+@RestControllerAdvice
 public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     /**
@@ -26,7 +31,11 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return false;
+        // 当controller中某个类或方法被自定义的@IgnoreResponseAdvice注解标识时代表不受commonResponse影响
+        if (returnType.getDeclaringClass().isAnnotationPresent(IgnoreResponseAdvice.class) || returnType.getMethod().isAnnotationPresent(IgnoreResponseAdvice.class)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -43,7 +52,15 @@ public class CommonResponseDataAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        return null;
+        CommonResponse<Object> commonResponse = new CommonResponse<>(ResponseCode.SUCCESS.getCode(), "");
+        if (body == null)
+            return response;
+        else if (body instanceof CommonResponse) {
+            commonResponse = (CommonResponse<Object>) body;
+        } else {
+            commonResponse.setData(body);
+        }
+        return commonResponse;
     }
     
 }
