@@ -11,15 +11,16 @@ eureka:
     service-url:
       defaultZone: http://localhost:8000/eureka/
 zuul:
+  # 给网关定义一个统一前缀
+  prefix: /ad
   routes:
     sponsor:
       # **为通配符(任意字符,支持多级目录), ?(任意单个字符), *(任意字符,支持一级目录)
       path: /ad-sponsor/**
       serviceId: ad-sponsor
-      # 设置不跳过前缀
-      strip-prefix: true
+      # 设置不跳过前缀（即微服务转发时，会带上/ad-sponsor前缀）
+      strip-prefix: false
     search:
       path: /ad-search/**
       serviceId: ad-search
       strip-prefix: false
-  prefix: /
