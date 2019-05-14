@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ad-sponsor
+    name: ad-sponsor-client
   jpa:
     show-sql: true
     hibernate:

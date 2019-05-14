@@ -1,18 +1,39 @@
 spring:
   application:
-    name: ad-search
+    name: ad-search-client
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+    open-in-view: false # 控制在懒加载的时候, 如果应用程序中对一些bean 执行过懒加载, 如果为true可能会对找不到一些Bean的配置而出现错误
+    properties:
+      hibernate.format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
-    url: jdbc:mysql://localhost:3307/ad_service?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    hikari:
+      password: 1212wasd
+      username: root
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      minimum-idle: 3
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1212wasd
+    url: jdbc:mysql://localhost:3307/ad_service?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+
 server:
   port: 8003
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8000/eureka/
+
+feign:
+  hystrix:
+    enabled: true
+
+# 暴露所有监控信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
