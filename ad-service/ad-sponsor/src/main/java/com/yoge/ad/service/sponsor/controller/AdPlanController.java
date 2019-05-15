@@ -33,7 +33,7 @@ public class AdPlanController {
     }
 
     @PostMapping("/get/adPlan")
-    public List<AdPlan> getAdPlanByIdList(@RequestBody AdPlanGetRequest request) throws AdException {
+    public List<AdPlan> getAdPlanListByIdList(@RequestBody AdPlanGetRequest request) throws AdException {
         log.info("ad-sponsor: getAdPlanByIdList -> {}", JSON.toJSONString(request));
         return adPlanService.getAdPlansByIds(request);
     }
