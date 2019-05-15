@@ -15,7 +15,7 @@ import java.util.List;
  * @author You Jia Ge
  * Created Time 2019/5/14
  */
-@FeignClient(value = "ad-sponsor-client")
+@FeignClient(value = "ad-sponsor-client", fallback = SponsorClientHystrix.class)
 public interface SponsorClient {
 
     @PostMapping("/ad-sponsor/get/adPlan")

@@ -11,9 +11,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EnableHystrixDashboard
-@EnableCircuitBreaker
-@EnableHystrix
+//@EnableHystrixDashboard
+//@EnableCircuitBreaker
+//@EnableHystrix
 public class SearchApplication {
 
     public static void main(String[] args) {
