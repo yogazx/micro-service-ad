@@ -32,6 +32,8 @@ spring:
 #      shutdown-timeout: 1000ms
 server:
   port: 8003
+  servlet:
+    context-path: /ad-search
 
 eureka:
   client:

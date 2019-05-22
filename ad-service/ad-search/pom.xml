@@ -73,13 +73,13 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
+            <version>1.11</version>
         </dependency>
         <!-- 集合类操作 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.0</version>
+            <version>4.2</version>
         </dependency>
         <!-- binlog 监听与解析: https://github.com/shyiko/mysql-binlog-connector-java -->
         <dependency>

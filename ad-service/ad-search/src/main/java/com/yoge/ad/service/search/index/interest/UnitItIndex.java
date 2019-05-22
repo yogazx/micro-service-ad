@@ -2,10 +2,12 @@ package com.yoge.ad.service.search.index.interest;
 
 import com.yoge.ad.service.search.index.IndexAware;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,5 +66,22 @@ public class UnitItIndex implements IndexAware<String, Set<Long>> {
             redisTemplate.opsForSet().remove(UNIT_IT_INDEX_PREFIX + unitId, key);
         }
         log.info("UnitItIndex, after delete the key set is {}", redisTemplate.keys(IT_UNIT_INDEX_PREFIX + "*"));
+    }
+
+    /**
+     * 查询对应unitId 对应的兴趣标签是否包含 itTagSet集合
+     * @param unitId
+     * @param itTagSet
+     * @return
+     */
+    @SuppressWarnings("all")
+    public boolean match(Long unitId, List<String> itTagSet) {
+        if (redisTemplate.hasKey(UNIT_IT_INDEX_PREFIX + unitId)) {
+            Set<Object> unitItTagSet = redisTemplate.opsForSet().members(UNIT_IT_INDEX_PREFIX + unitId);
+            if (CollectionUtils.isNotEmpty(unitItTagSet)) {
+                return CollectionUtils.isSubCollection(itTagSet, unitItTagSet);
+            }
+        }
+        return false;
     }
 }
