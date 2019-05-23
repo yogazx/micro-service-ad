@@ -27,4 +27,13 @@ public class CommonUtils {
     public static <K, V> V getOrCreateMap(K key, Map<K, V> map, Supplier<V> factory) {
         return map.computeIfAbsent(key, k -> factory.get());
     }
+
+    public static String stringContact(String... args) {
+        StringBuilder builder = new StringBuilder();
+        for (String arg : args) {
+            builder.append(arg);
+            builder.append("-");
+        }
+        return builder.deleteCharAt(builder.lastIndexOf("-")).toString();
+    }
 }
