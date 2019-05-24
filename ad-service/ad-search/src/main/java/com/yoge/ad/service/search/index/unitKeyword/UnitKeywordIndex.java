@@ -27,7 +27,7 @@ public class UnitKeywordIndex implements IndexAware<String, Set<Long>> {
     /**
      * keyword --> unit 索引  redis_key 前缀       倒排索引
      * <p>
-     * keyword ---> UnitIdSet
+     * redisKey :  keyword , value : UnitIdSet
      */
     private static final String KEYWORD_UNIT_INDEX_PREFIX = "keyword_unit_index_prefix_";
 

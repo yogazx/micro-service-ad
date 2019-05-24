@@ -29,9 +29,12 @@ spring:
         min-idle: 5
         max-wait: 600
     timeout: 6000
+    password: 1212wasd
 #      shutdown-timeout: 1000ms
 server:
   port: 8003
+  servlet:
+    context-path: /ad-search
 
 eureka:
   client:
