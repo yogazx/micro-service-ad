@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
@@ -48,6 +49,8 @@ public class RedisConfiguration {
     private Integer minIdle;
     @Value("${spring.redis.database}")
     private Integer database;
+    @Value("${spring.redis.password}")
+    private String password;
 
     @Bean
     public RedisStandaloneConfiguration redisStandaloneConfiguration() {
@@ -55,6 +58,7 @@ public class RedisConfiguration {
         configuration.setDatabase(database);
         configuration.setHostName(host);
         configuration.setPort(port);
+        configuration.setPassword(RedisPassword.of(password));
         return configuration;
     }
 
