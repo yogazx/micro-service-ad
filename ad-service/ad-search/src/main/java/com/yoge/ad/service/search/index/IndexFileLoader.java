@@ -33,19 +33,27 @@ public class IndexFileLoader {
     public void init() {
         // 第二层级 推广计划索引加载
         List<String> adPlanList = loadDump(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_PLAN));
-        adPlanList.forEach(adPlan -> AdLevelDataHandler.handleLevel2WithPlan(JSON.parseObject(adPlan, AdPlanTable.class), OperateType.ADD));
+        adPlanList.forEach(adPlan -> AdLevelDataHandler.handleLevel2WithPlan(
+                JSON.parseObject(adPlan, AdPlanTable.class),
+                OperateType.ADD));
 
         // 第二层级 创意索引加载
         List<String> adCreativeList = loadDump(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_CREATIVE));
-        adCreativeList.forEach(adCreative -> AdLevelDataHandler.handleLevel2WithCreative(JSON.parseObject(adCreative, AdCreativeTable.class), OperateType.ADD));
+        adCreativeList.forEach(adCreative -> AdLevelDataHandler.handleLevel2WithCreative(
+                JSON.parseObject(adCreative, AdCreativeTable.class),
+                OperateType.ADD));
 
         // 第三层级 推广单元索引加载
         List<String> adUnitList = loadDump(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT));
-        adUnitList.forEach(adUnit -> AdLevelDataHandler.handleLevel3WithUnit(JSON.parseObject(adUnit, AdUnitTable.class), OperateType.ADD));
+        adUnitList.forEach(adUnit -> AdLevelDataHandler.handleLevel3WithUnit(
+                JSON.parseObject(adUnit, AdUnitTable.class),
+                OperateType.ADD));
 
         // 第三层级 创意与推广单元关联索引加载
         List<String> adCreativeUnitList = loadDump(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_CREATIVE_UNIT));
-        adCreativeUnitList.forEach(adCreativeUnit -> AdLevelDataHandler.handleLevel3WithCreativeUnit(JSON.parseObject(adCreativeUnit, AdCreativeUnitTable.class), OperateType.ADD));
+        adCreativeUnitList.forEach(adCreativeUnit -> AdLevelDataHandler.handleLevel3WithCreativeUnit(
+                JSON.parseObject(adCreativeUnit, AdCreativeUnitTable.class),
+                OperateType.ADD));
 
         // 第四层级  推广单元地域限制 索引加载
         List<String> adUnitDistrictList = loadDump(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT_DISTRICT));

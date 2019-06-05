@@ -4,7 +4,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: false # 控制在懒加载的时候, 如果应用程序中对一些bean 执行过懒加载, 如果为true可能会对找不到一些Bean的配置而出现错误
     properties:
       hibernate.format_sql: true
