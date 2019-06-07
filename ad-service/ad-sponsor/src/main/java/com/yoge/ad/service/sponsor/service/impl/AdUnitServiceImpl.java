@@ -130,6 +130,7 @@ public class AdUnitServiceImpl implements AdUnitService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public AdUnitDistrictResponse createUnitDistrict(AdUnitDistrictRequest request) throws AdException {
         List<Long> unitIdList = request.getUnitDistrictList()
                 .stream()
