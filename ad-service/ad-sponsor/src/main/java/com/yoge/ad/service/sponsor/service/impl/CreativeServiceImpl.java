@@ -13,6 +13,7 @@ import com.yoge.ad.service.sponsor.vo.CreativeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class CreativeServiceImpl implements CreativeService {
     private AdCreativeRepository adCreativeRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CreativeResponse createCreative(CreativeRequest request) throws AdException {
         if (!request.isValidate()) {
             throw new CreativeException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
