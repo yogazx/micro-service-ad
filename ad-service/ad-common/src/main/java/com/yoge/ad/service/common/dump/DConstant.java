@@ -8,7 +8,7 @@ package com.yoge.ad.service.common.dump;
  */
 public class DConstant {
 
-    public static final String DATA_ROOT_DIR = "D:/SpringSeriesDemo/dump/";
+    public static final String DATA_ROOT_DIR = "/Users/geyoujia/document/dump/";
 
     //各个表数据的存储文件名
     public static final String AD_PLAN = "ad_plan.data";

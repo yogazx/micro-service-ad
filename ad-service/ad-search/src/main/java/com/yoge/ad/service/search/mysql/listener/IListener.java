@@ -1,5 +1,7 @@
 package com.yoge.ad.service.search.mysql.listener;
 
+import com.yoge.ad.service.search.mysql.dto.BinlogRowData;
+
 /**
  * DESC
  *
@@ -8,7 +10,14 @@ package com.yoge.ad.service.search.mysql.listener;
  */
 public interface IListener {
 
+    /**
+     * 对不同的表进行不同放入增量数据更新方法，可以通过此方法注册不同的监听器
+     */
     void  register();
 
-
+    /**
+     * 监听到事件
+     * @param eventData
+     */
+    void onEvent(BinlogRowData eventData);
 }

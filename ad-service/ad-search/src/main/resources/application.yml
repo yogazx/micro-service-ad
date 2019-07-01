@@ -17,7 +17,7 @@ spring:
       connection-timeout: 30000
       minimum-idle: 3
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/ad_service?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/ad_service?characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
   redis:
     port: 6379
     host: 127.0.0.1
@@ -29,7 +29,7 @@ spring:
         min-idle: 5
         max-wait: 600
     timeout: 6000
-    password: 1212wasd
+#    password: 1212wasd
 #      shutdown-timeout: 1000ms
 server:
   port: 8003

@@ -1,6 +1,7 @@
 package com.yoge.ad.service.search.mysql;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
 import com.yoge.ad.service.search.mysql.constant.OperateType;
 import com.yoge.ad.service.search.mysql.dto.ParseTemplate;
 import com.yoge.ad.service.search.mysql.dto.TableTemplate;
@@ -52,7 +53,7 @@ public class TemplateHolder {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try {
             InputStream inputStream = classLoader.getResourceAsStream(path);
-            Template template = JSON.parseObject(inputStream, StandardCharsets.UTF_8, Template.class);
+            Template template = JSON.parseObject(inputStream, StandardCharsets.UTF_8, Template.class, Feature.IgnoreNotMatch);
             this.parseTemplate = ParseTemplate.parse(template);
             loadMeta();
         } catch (IOException e) {

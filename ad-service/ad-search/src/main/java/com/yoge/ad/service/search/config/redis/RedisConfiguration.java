@@ -49,8 +49,8 @@ public class RedisConfiguration {
     private Integer minIdle;
     @Value("${spring.redis.database}")
     private Integer database;
-    @Value("${spring.redis.password}")
-    private String password;
+//    @Value("${spring.redis.password}")
+//    private String password;
 
     @Bean
     public RedisStandaloneConfiguration redisStandaloneConfiguration() {
@@ -58,7 +58,7 @@ public class RedisConfiguration {
         configuration.setDatabase(database);
         configuration.setHostName(host);
         configuration.setPort(port);
-        configuration.setPassword(RedisPassword.of(password));
+//        configuration.setPassword(RedisPassword.of(password));
         return configuration;
     }
 
