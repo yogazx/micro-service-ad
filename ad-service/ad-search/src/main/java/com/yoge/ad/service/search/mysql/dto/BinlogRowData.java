@@ -14,7 +14,7 @@ import java.util.Map;
 public class BinlogRowData {
 
     private TableTemplate tableTemplate;
-    private EventType type;
+    private EventType eventType;
 
     /**
      * Map中 key: columnName; value: columnValue
