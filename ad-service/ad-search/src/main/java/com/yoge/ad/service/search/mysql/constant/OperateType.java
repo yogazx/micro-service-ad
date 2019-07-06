@@ -15,7 +15,7 @@ public enum OperateType {
     DELETE,
     OTHER;
 
-    public static OperateType to(EventType eventType) {
+    public static OperateType of(EventType eventType) {
         if (EventType.isUpdate(eventType))
             return UPDATE;
         if (EventType.isWrite(eventType))

@@ -106,9 +106,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
      * WriteRowsEventData{tableId=122, includedColumns={0, 1, 2}, rows=[[13, 10, 标志]]},
      *
      * 一次单行update事件后，产生的eventData如下
-     *UpdateRowsEventData{tableId=108, includedColumnsBeforeUpdate={0, 1, 2, 3, 4, 5}, includedColumns={0, 1, 2, 3, 4, 5}, rows=[
-     *     {before=[2, Sat Jul 06 13:59:14 CST 2019, 15, Sat Jul 06 13:59:22 CST 2019, 1, info], after=[2, Sat Jul 06 13:59:14 CST 2019, 15, Sat Jul 06 13:59:22 CST 2019, 2, cc]}
-     * ]}
+     * UpdateRowsEventData{tableId=108, includedColumnsBeforeUpdate={0, 1, 2, 3, 4}, includedColumns={0, 1, 2, 3, 4, 5}, rows=[{before=[2, 15, Sat Jul 06 13:59:22 CST 2019, 1, info], after=[2, 15, Sat Jul 06 13:59:22 CST 2019, 2, cc]}]}
      *
      * @param eventData
      * @return

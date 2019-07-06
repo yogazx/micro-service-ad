@@ -16,8 +16,8 @@ public interface IListener {
     void  register();
 
     /**
-     * 监听到事件
-     * @param eventData
+     * 事件处理逻辑
+     * @param binlogRowData
      */
-    void onEvent(BinlogRowData eventData);
+    void onEvent(BinlogRowData binlogRowData);
 }
