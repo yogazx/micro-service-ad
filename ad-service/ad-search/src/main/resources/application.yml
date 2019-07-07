@@ -55,8 +55,10 @@ management:
 adconf:
   mysql:
     host: 127.0.0.1
-    port: 3307
+    port: 3306
     username: root
     password: 1212wasd
-    binlogName:
+    binlogName: mysql-bin.000005
     position: -1
+  kafka:
+    topic:

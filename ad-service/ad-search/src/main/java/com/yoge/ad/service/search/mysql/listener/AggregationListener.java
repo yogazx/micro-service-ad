@@ -46,7 +46,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
 
     public void register(String databaseName, String tableName, IListener listener) {
         log.info("register : {}-{}", databaseName, tableName);
-        listenerMap.put(generateKey(databaseName, tableName), listener);
+        this.listenerMap.put(generateKey(databaseName, tableName), listener);
     }
 
     /**
@@ -57,6 +57,10 @@ public class AggregationListener implements BinaryLogClient.EventListener {
      * 4. 对于包装后的 {@link BinlogRowData} 使用自定义的 业务事件监听器{@link IListener} 进行处理, 对于检索服务来说
      * 对{@link BinlogRowData}的处理方式就是实现对增量数据的一次更新
      *
+     * 例如一个UPDATE_ROWS_EVENT,mysql.binlog.connector.java 会将其解析成：
+     * Event{header=EventHeaderV4{timestamp=1562393807000, eventType=EXT_UPDATE_ROWS, serverId=1, headerLength=19, dataLength=81, nextPosition=464, flags=0}, data=UpdateRowsEventData{tableId=108, includedColumnsBeforeUpdate={0, 1, 2, 3, 4}, includedColumns={0, 1, 2, 3, 4}, rows=[
+     *     {before=[2,15, Sat Jul 06 13:59:22 CST 2019, 1, info], after=[2, 15, Sat Jul 06 13:59:22 CST 2019, 2, cc]}
+     * ]}}
      * @param event
      */
     @Override
@@ -126,15 +130,8 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             for (Serializable[] beforeValues : beforeValueList) {
                 Map<String, String> beforeMap = Maps.newHashMap();
                 int length = beforeValues.length;
+                // 从零开始是因为binlog-connector-java的索引是从0开始
                 for (int i = 0; i < length; i++) {
-                    // 字段索引映射到字段名
-//                    String columnName = tableTemplate.getPositionMap().get(i);
-//                    if (StringUtils.isBlank(columnName)) {
-//                        log.debug("当前列未找到,忽略该position:{}", i);
-//                        continue;
-//                    }
-//                    String columnValue = beforeValues[i].toString();
-//                    beforeMap.put(columnName, columnValue);
                     beforeMap = generateColumnName2ColumnValue(beforeMap, tableTemplate, i, beforeValues);
                     log.debug("before update : {}", beforeMap);
                 }
@@ -147,14 +144,8 @@ public class AggregationListener implements BinaryLogClient.EventListener {
         for (Serializable[] afterValues : afterValueList) {
             Map<String, String> afterMap = Maps.newHashMap();
             int length = afterValues.length;
+            // 从零开始是因为binlog-connector-java的索引是从0开始
             for (int i = 0; i < length; i++) {
-//                String columnName = tableTemplate.getPositionMap().get(i);
-//                if (StringUtils.isBlank(columnName)) {
-//                    log.debug("当前列未找到,忽略该position:{}", i);
-//                    continue;
-//                }
-//                String columnValue = afterValues[i].toString();
-//                afterMap.put(columnName, columnValue);
                 afterMap = generateColumnName2ColumnValue(afterMap, tableTemplate, i, afterValues);
                 log.debug("after update : {}", afterMap);
             }

@@ -1,6 +1,9 @@
-package com.yoge.ad.service.search.mysql.dto;
+package com.yoge.ad.service.search.mysql;
 
 import com.yoge.ad.service.search.mysql.constant.OperateType;
+import com.yoge.ad.service.search.mysql.dto.JsonTable;
+import com.yoge.ad.service.search.mysql.dto.TableTemplate;
+import com.yoge.ad.service.search.mysql.dto.Template;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -20,6 +23,9 @@ public class ParseTemplate {
 
     private String databaseName;
 
+    /**
+     * key : tableName , value : TableTemplate
+     */
     private Map<String, TableTemplate> tableTemplateMap = new HashMap<>();
 
     public static ParseTemplate parse(Template jsonTemplate) {

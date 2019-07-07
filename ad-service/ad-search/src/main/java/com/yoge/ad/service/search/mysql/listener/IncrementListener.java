@@ -6,12 +6,15 @@ import com.yoge.ad.service.search.mysql.constant.OperateType;
 import com.yoge.ad.service.search.mysql.dto.BinlogRowData;
 import com.yoge.ad.service.search.mysql.dto.MysqlRowData;
 import com.yoge.ad.service.search.mysql.dto.TableTemplate;
+import com.yoge.ad.service.search.sender.ISender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * 注册需要监听的表，同时将增量数据投送到Kafka
@@ -25,6 +28,9 @@ public class IncrementListener implements IListener {
 
     @Autowired
     private AggregationListener aggregationListener;
+
+    @Autowired
+    private ISender sender;
 
     @PostConstruct
     @Override
@@ -41,6 +47,14 @@ public class IncrementListener implements IListener {
         mysqlRowData.setTableName(tableTemplate.getTableName());
         mysqlRowData.setLevel(tableTemplate.getLevel());
         mysqlRowData.setOperateType(OperateType.of(eventType));
-        // todo
+
+        // 取出模版中该操作类型对应的该表的字段集合
+        List<String> fieldList = tableTemplate.getOperateTypeFieldMap().get(mysqlRowData.getOperateType());
+        if (fieldList == null) {
+            LOGGER.warn("template.json中表 {}不存在操作类型 {}。数据不应该被处理", mysqlRowData.getTableName(), mysqlRowData.getOperateType());
+            return;
+        }
+        binlogRowData.getAfter().forEach(afterMap -> mysqlRowData.getFieldValueMapList().add(afterMap));
+        sender.send(mysqlRowData);
     }
 }

@@ -3,7 +3,6 @@ package com.yoge.ad.service.search.mysql;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import com.yoge.ad.service.search.mysql.constant.OperateType;
-import com.yoge.ad.service.search.mysql.dto.ParseTemplate;
 import com.yoge.ad.service.search.mysql.dto.TableTemplate;
 import com.yoge.ad.service.search.mysql.dto.Template;
 import lombok.extern.slf4j.Slf4j;

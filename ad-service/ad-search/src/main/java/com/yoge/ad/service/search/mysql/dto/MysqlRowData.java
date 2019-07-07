@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 投递的增量数据实体
+ * 投递的增量数据实体(目前不支持多数据库)
  * @author geyoujia
  * @date 2019/07/06
  */
@@ -18,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class MysqlRowData {
 
+    // private String databaseName;目前不支持多数据库
     private String tableName;
     private Integer level;
     private OperateType operateType;

@@ -21,6 +21,9 @@ import java.util.Map;
 public class TableTemplate {
 
     private String tableName;
+    /**
+     * 索引加载层级
+     */
     private Integer level;
     /**
      * 操作类型 ---> 受此操作影响的数据库列
