@@ -27,6 +27,7 @@ public class KafkaSender implements ISender {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
+    // todo 这里发送Kafka失败，解决一下
     @Override
     public void send(MysqlRowData mysqlRowData) {
         LOGGER.info("开始向Kafka投递增量数据");

@@ -7,9 +7,11 @@ import com.google.common.collect.Maps;
 import com.yoge.ad.service.search.mysql.TemplateHolder;
 import com.yoge.ad.service.search.mysql.dto.BinlogRowData;
 import com.yoge.ad.service.search.mysql.dto.TableTemplate;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -20,12 +22,13 @@ import java.util.stream.Collectors;
 
 /**
  * DESC
- *
+ * todo 当解析binlog发生中断时记录下当前position，这样重启时可以指定读取的position位置
  * @author You Jia Ge
  * Created Time 2019/7/5
  */
 @Slf4j
 @Component
+@Data
 public class AggregationListener implements BinaryLogClient.EventListener {
 
     private String databaseName;
@@ -34,6 +37,9 @@ public class AggregationListener implements BinaryLogClient.EventListener {
     private Map<String, IListener> listenerMap = Maps.newConcurrentMap();
 
     private final TemplateHolder templateHolder;
+
+    @Value("${adconf.mysql.position}")
+    private long position;
 
     @Autowired
     public AggregationListener(TemplateHolder templateHolder)  {
@@ -67,7 +73,17 @@ public class AggregationListener implements BinaryLogClient.EventListener {
     public void onEvent(Event event) {
         EventType eventType = event.getHeader().getEventType();
         log.debug("event type : {}", eventType);
-        // 如果是TABLE_MAP_EVENT，则不做处理
+        if (position == -1) {
+            position = 4;
+        }
+        /**
+         * todo 1.在这里获取当前读取到的具体position(有bug)，这个position可以写入redis,这样当系统挂掉时,下次读取时可以防止重复消费
+         *      当自定义position时需要主要起始位置是一个事务的开始，否则会解析失败
+         *      2.看一下源码是如何查找到自定义position的位置的
+         */
+        // position = position + event.getHeader().getHeaderLength() + event.getHeader().getDataLength();
+        log.info("当前position: {}", position);
+        // 如果是TABLE_MAP_EVENT，则记录当前数据库名和表名
         if (eventType == EventType.TABLE_MAP) {
             TableMapEventData eventData = event.getData();
             this.tableName = eventData.getTable();
@@ -95,6 +111,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             if (binlogRowData == null)
                 return;
             binlogRowData.setEventType(eventType);
+            log.info("binlogRowData 构造成功, {}", binlogRowData);
             listener.onEvent(binlogRowData);
         } catch (Exception e) {
             log.error("binlogRowData 构造失败");
@@ -102,7 +119,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             this.databaseName = StringUtils.EMPTY;
             this.tableName = StringUtils.EMPTY;
         }
-
+        System.out.println("当前event: " + event.toString());
     }
 
     /**

@@ -58,7 +58,7 @@ adconf:
     port: 3306
     username: root
     password: 1212wasd
-    binlogName: mysql-bin.000005
-    position: -1
+    binlogName: /usr/local/mysql/data/mysql-bin.000005
+    position: 1748
   kafka:
-    topic:
+    topic: ad-service-mysql-binlog

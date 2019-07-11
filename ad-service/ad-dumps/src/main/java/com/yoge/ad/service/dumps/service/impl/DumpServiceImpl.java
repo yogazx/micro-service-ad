@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -59,6 +60,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adPlanTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdPlanTable adPlanTable : adPlanTableList) {
@@ -81,6 +83,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adUnitTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdUnitTable adUnitTable : adUnitTableList) {
@@ -103,6 +106,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adCreativeTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdCreativeTable adCreativeTable : adCreativeTableList) {
@@ -125,6 +129,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adCreativeUnitTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdCreativeUnitTable adCreativeUnitTable : adCreativeUnitTableList) {
@@ -147,6 +152,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adUnitDistrictTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdUnitDistrictTable adUnitDistrictTable : adUnitDistrictTableList) {
@@ -169,6 +175,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adUnitItTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdUnitItTable adUnitItTable : adUnitItTableList) {
@@ -191,6 +198,7 @@ public class DumpServiceImpl implements DumpService {
         if (CollectionUtils.isEmpty(adUnitKeywordTableList))
             return;
         Path path = Paths.get(fileName);
+        generateFileIfNotExist(fileName);
         try {
             BufferedWriter writer = Files.newBufferedWriter(path);
             for (AdUnitKeywordTable adUnitKeywordTable : adUnitKeywordTableList) {
@@ -203,4 +211,15 @@ public class DumpServiceImpl implements DumpService {
         }
     }
 
+    private void generateFileIfNotExist(String fileName) {
+        Path path = Paths.get(fileName);
+        boolean exists = Files.exists(path, new LinkOption[]{LinkOption.NOFOLLOW_LINKS});
+        if (!exists) {
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

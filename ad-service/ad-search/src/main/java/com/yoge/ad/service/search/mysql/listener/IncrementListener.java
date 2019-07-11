@@ -1,6 +1,7 @@
 package com.yoge.ad.service.search.mysql.listener;
 
 import com.github.shyiko.mysql.binlog.event.EventType;
+import com.google.common.collect.Lists;
 import com.yoge.ad.service.search.mysql.constant.DBConstant;
 import com.yoge.ad.service.search.mysql.constant.OperateType;
 import com.yoge.ad.service.search.mysql.dto.BinlogRowData;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.rmi.runtime.Log;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -47,7 +47,7 @@ public class IncrementListener implements IListener {
         mysqlRowData.setTableName(tableTemplate.getTableName());
         mysqlRowData.setLevel(tableTemplate.getLevel());
         mysqlRowData.setOperateType(OperateType.of(eventType));
-
+        mysqlRowData.setFieldValueMapList(Lists.newArrayList());
         // 取出模版中该操作类型对应的该表的字段集合
         List<String> fieldList = tableTemplate.getOperateTypeFieldMap().get(mysqlRowData.getOperateType());
         if (fieldList == null) {
