@@ -37,7 +37,7 @@ public class BinlogClient {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1), factory, new ThreadPoolExecutor.AbortPolicy());
         executor.submit(() -> {
             client = new BinaryLogClient(binlogConfig.getHost(), binlogConfig.getPort(), binlogConfig.getUsername(), binlogConfig.getPassword());
-            if (StringUtils.isNotBlank(binlogConfig.getBinlogName())) {
+            if (StringUtils.isNotBlank(binlogConfig.getBinlogName()) && binlogConfig.getPosition() != -1l) {
                 client.setBinlogFilename(binlogConfig.getBinlogName());
                 client.setBinlogPosition(binlogConfig.getPosition());
             }
@@ -49,8 +49,7 @@ public class BinlogClient {
                 client.connect();
                 log.info("connected to mysql");
             } catch (Exception e) {
-                e.printStackTrace();
-                log.error("mysql binlog connect error");
+                log.error("mysql binlog connect error, exception : {}", e);
             }
         });
         executor.shutdown();
@@ -63,8 +62,7 @@ public class BinlogClient {
         try {
             client.disconnect();
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("mysql binlog disconnect error");
+            log.error("mysql binlog disconnect error, exception : {}", e);
         }
     }
 }

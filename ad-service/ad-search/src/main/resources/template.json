@@ -6,17 +6,23 @@
       "level": 2,
       "insertList": [
         {"column": "id"},
-        {"column": "user_id"},
+        {"column": "create_time"},
+        {"column": "end_date"},
+        {"column": "plan_name"},
         {"column": "plan_status"},
         {"column": "start_date"},
-        {"column": "end_date"}
+        {"column": "update_time"},
+        {"column": "user_id"}
       ],
       "updateList": [
         {"column": "id"},
-        {"column": "user_id"},
+        {"column": "create_time"},
+        {"column": "end_date"},
+        {"column": "plan_name"},
         {"column": "plan_status"},
         {"column": "start_date"},
-        {"column": "end_date"}
+        {"column": "update_time"},
+        {"column": "user_id"}
       ],
       "deleteList": [
         {"column": "id"}
@@ -27,15 +33,23 @@
       "level": 3,
       "insertList": [
         {"column": "id"},
-        {"column": "unit_status"},
+        {"column": "budget"},
+        {"column": "create_time"},
+        {"column": "plan_id"},
         {"column": "position_type"},
-        {"column": "plan_id"}
+        {"column": "unit_name"},
+        {"column": "unit_status"},
+        {"column": "update_time"}
       ],
       "updateList": [
         {"column": "id"},
-        {"column": "unit_status"},
+        {"column": "budget"},
+        {"column": "create_time"},
+        {"column": "plan_id"},
         {"column": "position_type"},
-        {"column": "plan_id"}
+        {"column": "unit_name"},
+        {"column": "unit_status"},
+        {"column": "update_time"}
       ],
       "deleteList": [
         {"column": "id"}
@@ -46,21 +60,33 @@
       "level": 2,
       "insertList": [
         {"column": "id"},
-        {"column": "type"},
-        {"column": "material_type"},
-        {"column": "height"},
-        {"column": "width"},
         {"column": "audit_status"},
-        {"column": "url"}
+        {"column": "create_time"},
+        {"column": "duration"},
+        {"column": "height"},
+        {"column": "material_type"},
+        {"column": "name"},
+        {"column": "size"},
+        {"column": "type"},
+        {"column": "update_time"},
+        {"column": "url"},
+        {"column": "user_id"},
+        {"column": "width"}
       ],
       "updateList": [
         {"column": "id"},
-        {"column": "type"},
-        {"column": "material_type"},
-        {"column": "height"},
-        {"column": "width"},
         {"column": "audit_status"},
-        {"column": "url"}
+        {"column": "create_time"},
+        {"column": "duration"},
+        {"column": "height"},
+        {"column": "material_type"},
+        {"column": "name"},
+        {"column": "size"},
+        {"column": "type"},
+        {"column": "update_time"},
+        {"column": "url"},
+        {"column": "user_id"},
+        {"column": "width"}
       ],
       "deleteList": [
         {"column": "id"}
@@ -70,58 +96,70 @@
       "tableName": "creative_unit",
       "level": 3,
       "insertList": [
+        {"column": "id"},
         {"column": "creative_id"},
         {"column": "unit_id"}
       ],
       "updateList": [
-      ],
-      "deleteList": [
+        {"column": "id"},
         {"column": "creative_id"},
         {"column": "unit_id"}
+      ],
+      "deleteList": [
+        {"column": "id"}
       ]
     },
     {
-      "tableName": "ad_unit_district",
+      "tableName": "unit_district",
       "level": 4,
       "insertList": [
+        {"column": "id"},
         {"column": "unit_id"},
         {"column": "province"},
         {"column": "city"}
       ],
       "updateList": [
-      ],
-      "deleteList": [
+        {"column": "id"},
         {"column": "unit_id"},
         {"column": "province"},
         {"column": "city"}
+      ],
+      "deleteList": [
+        {"column": "id"}
       ]
     },
     {
       "tableName": "ad_unit_it",
       "level": 4,
       "insertList": [
-        {"column": "unit_id"},
-        {"column": "it_tag"}
+        {"column": "id"},
+        {"column": "it_tag"},
+        {"column": "unit_id"}
       ],
       "updateList": [
+        {"column": "id"},
+        {"column": "it_tag"},
+        {"column": "unit_id"}
       ],
       "deleteList": [
-        {"column": "unit_id"},
-        {"column": "it_tag"}
+        {"column": "id"}
       ]
     },
     {
       "tableName": "ad_unit_keyword",
       "level": 4,
       "insertList": [
-        {"column": "unit_id"},
-        {"column": "keyword"}
+        {"column": "id"},
+        {"column": "keyword"},
+        {"column": "unit_id"}
       ],
       "updateList": [
+        {"column": "id"},
+        {"column": "keyword"},
+        {"column": "unit_id"}
       ],
       "deleteList": [
-        {"column": "unit_id"},
-        {"column": "keyword"}
+        {"column": "id"}
       ]
     }
   ]

@@ -23,10 +23,9 @@ public class UnitDistrictIndex implements IndexAware<String, Set<Long>> {
 
     /**
      * 倒排索引 <p>
-     *  地域(省市) --> 推广单元
-     *   key: district(province + "-" + city); value: unitIdSet
-     *  redis  --  key: prefix + province + "-" + city; value: unitIdSet
-     *
+     * 地域(省市) --> 推广单元
+     * key: district(province + "-" + city); value: unitIdSet
+     * redis  --  key: prefix + province + "-" + city; value: unitIdSet
      */
     private static final String DISTRICT_UNIT_INDEX_PREFIX = "district_unit_index_prefix_";
 

@@ -80,8 +80,9 @@ public class AggregationListener implements BinaryLogClient.EventListener {
          * todo 1.在这里获取当前读取到的具体position(有bug)，这个position可以写入redis,这样当系统挂掉时,下次读取时可以防止重复消费
          *      当自定义position时需要主要起始位置是一个事务的开始，否则会解析失败
          *      2.看一下源码是如何查找到自定义position的位置的
+         *
+         *      原先这么写不对：position = position + event.getHeader().getHeaderLength() + event.getHeader().getDataLength();
          */
-        // position = position + event.getHeader().getHeaderLength() + event.getHeader().getDataLength();
         log.info("当前position: {}", position);
         // 如果是TABLE_MAP_EVENT，则记录当前数据库名和表名
         if (eventType == EventType.TABLE_MAP) {
@@ -119,7 +120,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             this.databaseName = StringUtils.EMPTY;
             this.tableName = StringUtils.EMPTY;
         }
-        System.out.println("当前event: " + event.toString());
+        log.info("当前event: " + event.toString());
     }
 
     /**
@@ -149,7 +150,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
                 int length = beforeValues.length;
                 // 从零开始是因为binlog-connector-java的索引是从0开始
                 for (int i = 0; i < length; i++) {
-                    beforeMap = generateColumnName2ColumnValue(beforeMap, tableTemplate, i, beforeValues);
+                    generateColumnName2ColumnValue(beforeMap, tableTemplate, i, beforeValues);
                     log.debug("before update : {}", beforeMap);
                 }
                 beforeMapList.add(beforeMap);
@@ -163,7 +164,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             int length = afterValues.length;
             // 从零开始是因为binlog-connector-java的索引是从0开始
             for (int i = 0; i < length; i++) {
-                afterMap = generateColumnName2ColumnValue(afterMap, tableTemplate, i, afterValues);
+                generateColumnName2ColumnValue(afterMap, tableTemplate, i, afterValues);
                 log.debug("after update : {}", afterMap);
             }
             afterMapList.add(afterMap);
@@ -173,14 +174,13 @@ public class AggregationListener implements BinaryLogClient.EventListener {
         return rowData;
     }
 
-    private Map<String, String> generateColumnName2ColumnValue(Map<String, String> map, TableTemplate tableTemplate, int index, Serializable[] values) {
+    private void generateColumnName2ColumnValue(Map<String, String> map, TableTemplate tableTemplate, int index, Serializable[] values) {
         String columnName = tableTemplate.getPositionMap().get(index);
         if (StringUtils.isBlank(columnName)) {
             log.debug("当前列未找到,忽略该position:{}", index);
         }
         String columnValue = values[index].toString();
         map.put(columnName, columnValue);
-        return map;
     }
 
     private List<Serializable[]> getAfterValues(EventData eventData) {
@@ -189,6 +189,7 @@ public class AggregationListener implements BinaryLogClient.EventListener {
             return ((WriteRowsEventData) eventData).getRows();
         }
         // update event
+        // update event的更新后的值是对应map中的value
         if (eventData instanceof UpdateRowsEventData) {
             return ((UpdateRowsEventData) eventData).getRows().stream().map(Map.Entry::getValue).collect(Collectors.toList());
         }

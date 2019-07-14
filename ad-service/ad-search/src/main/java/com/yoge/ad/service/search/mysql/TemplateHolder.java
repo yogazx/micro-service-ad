@@ -77,6 +77,7 @@ public class TemplateHolder {
                     (resultSet, rowNum) -> {
                         int position = resultSet.getInt("ordinal_position");
                         String columnName = resultSet.getString("column_name");
+                        // 判断该字段是否是在自定义的template.json文件中出现，如果出现则代表该字段是有用的
                         if ((updateFields != null && updateFields.contains(columnName)) || (insertFields != null && insertFields.contains(columnName)) || (deleteFields != null && deleteFields.contains(columnName))) {
                             // 查询语句查询出来索引是从 1 开始, binlog-connector-java的索引是从0开始, 所以需要position - 1
                             tableTemplate.getPositionMap().put(position - 1, columnName);

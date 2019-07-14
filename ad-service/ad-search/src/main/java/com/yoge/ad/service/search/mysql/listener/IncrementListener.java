@@ -7,7 +7,8 @@ import com.yoge.ad.service.search.mysql.constant.OperateType;
 import com.yoge.ad.service.search.mysql.dto.BinlogRowData;
 import com.yoge.ad.service.search.mysql.dto.MysqlRowData;
 import com.yoge.ad.service.search.mysql.dto.TableTemplate;
-import com.yoge.ad.service.search.sender.ISender;
+import com.yoge.ad.service.search.sender.kafka.KafkaSender;
+import com.yoge.ad.service.search.sender.redis.RedisIndexSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,10 @@ public class IncrementListener implements IListener {
     private AggregationListener aggregationListener;
 
     @Autowired
-    private ISender sender;
+    private KafkaSender kafkaSender;
+
+    @Autowired
+    private RedisIndexSender redisIndexSender;
 
     @PostConstruct
     @Override
@@ -55,6 +59,7 @@ public class IncrementListener implements IListener {
             return;
         }
         binlogRowData.getAfter().forEach(afterMap -> mysqlRowData.getFieldValueMapList().add(afterMap));
-        sender.send(mysqlRowData);
+//        kafkaSender.send(mysqlRowData);
+        redisIndexSender.send(mysqlRowData);
     }
 }

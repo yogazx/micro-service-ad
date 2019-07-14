@@ -10,7 +10,7 @@ public class DBConstant {
 
     private static final String DB_NAME = "ad_service";
 
-    public static class AD_PLAN_TABLE_INFO{
+    public static class AD_PLAN_TABLE_INFO {
 
         public static final String TABLE_NAME = "ad_plan";
 
@@ -51,7 +51,7 @@ public class DBConstant {
     }
 
     public static class AD_UNIT_DISTRICT_TABLE_INFO {
-        public static final String TABLE_NAME = "ad_unit_district";
+        public static final String TABLE_NAME = "unit_district";
 
         public static final String COLUMN_UNIT_ID = "unit_id";
         public static final String COLUMN_PROVINCE = "province";
