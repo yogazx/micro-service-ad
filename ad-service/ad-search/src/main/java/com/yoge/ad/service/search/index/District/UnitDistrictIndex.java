@@ -1,12 +1,18 @@
 package com.yoge.ad.service.search.index.District;
 
+import com.google.common.collect.Sets;
 import com.yoge.ad.service.search.index.IndexAware;
+import com.yoge.ad.service.search.mediaSearch.vo.feature.DistrictFeature;
+import com.yoge.ad.service.search.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * DESC 地域索引对象实现
@@ -66,5 +72,16 @@ public class UnitDistrictIndex implements IndexAware<String, Set<Long>> {
             redisTemplate.opsForSet().remove(UNIT_DISTRICT_INDEX_PREFIX + unitId, key);
         }
         log.info("UnitDistrictIndex, after delete the key set is {}", redisTemplate.keys(DISTRICT_UNIT_INDEX_PREFIX + "*"));
+    }
+
+    public boolean match(Long adUnitId, List<DistrictFeature.ProvinceAndCity> districts) {
+        if (redisTemplate.hasKey(UNIT_DISTRICT_INDEX_PREFIX + adUnitId) &&
+                CollectionUtils.isNotEmpty(redisTemplate.opsForSet().members(UNIT_DISTRICT_INDEX_PREFIX + adUnitId))) {
+            List<String> targetDistrict = districts.stream()
+                    .map(district -> CommonUtils.stringContact(district.getProvince(), district.getCity()))
+                    .collect(Collectors.toList());
+            return CollectionUtils.isSubCollection(targetDistrict, districts);
+        }
+        return false;
     }
 }

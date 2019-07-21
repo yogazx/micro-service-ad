@@ -53,9 +53,6 @@ public class BinlogClient {
             }
         });
         executor.shutdown();
-//        if (executor.isShutdown()) {
-//            close();
-//        }
     }
 
     public void close() {

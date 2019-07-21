@@ -103,6 +103,8 @@ public class RedisConfiguration {
         redisSerializer.setObjectMapper(objectMapper);
         redisTemplate.setValueSerializer(redisSerializer);
         redisTemplate.setKeySerializer(new StringRedisSerializer(StandardCharsets.UTF_8));
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer(StandardCharsets.UTF_8));
+        redisTemplate.setHashValueSerializer(redisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }

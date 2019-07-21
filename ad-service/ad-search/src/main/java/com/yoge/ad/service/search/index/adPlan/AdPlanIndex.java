@@ -1,6 +1,7 @@
 package com.yoge.ad.service.search.index.adPlan;
 
 import com.yoge.ad.service.search.index.IndexAware;
+import com.yoge.ad.service.search.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,10 +32,12 @@ public class AdPlanIndex implements IndexAware<Long, AdPlanObject> {
     @Override
     public void add(Long key, AdPlanObject value) {
         String redisKey = AD_PLAN_INDEX_PREFIX + key;
-        log.info("AdPlanIndex, before add the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+//        log.info("AdPlanIndex, before add the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+        log.info("AdPlanIndex, before add the key set is {}", RedisUtil.scan(redisTemplate, AD_PLAN_INDEX_PREFIX + "*", Integer.MAX_VALUE));
         // 如果key不存在则新增，如果存在则不改变已有的值
         redisTemplate.opsForValue().setIfAbsent(redisKey, value);
-        log.info("AdPlanIndex, after add the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+//        log.info("AdPlanIndex, after add the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+        log.info("AdPlanIndex, after add the key set is {}", RedisUtil.scan(redisTemplate, AD_PLAN_INDEX_PREFIX + "*", Integer.MAX_VALUE));
     }
 
     @Override
@@ -50,8 +53,10 @@ public class AdPlanIndex implements IndexAware<Long, AdPlanObject> {
     @Override
     public void delete(Long key, AdPlanObject value) {
         String redisKey = AD_PLAN_INDEX_PREFIX + key;
-        log.info("AdPlanIndex, before delete the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+//        log.info("AdPlanIndex, before delete the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+        log.info("AdPlanIndex, before delete the key set is {}", RedisUtil.scan(redisTemplate, AD_PLAN_INDEX_PREFIX + "*", Integer.MAX_VALUE));
         redisTemplate.delete(redisKey);
-        log.info("AdPlanIndex, after delete the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+//        log.info("AdPlanIndex, after delete the key set is {}", redisTemplate.keys(AD_PLAN_INDEX_PREFIX + "*"));
+        log.info("AdPlanIndex, after delete the key set is {}", RedisUtil.scan(redisTemplate, AD_PLAN_INDEX_PREFIX + "*", Integer.MAX_VALUE));
     }
 }

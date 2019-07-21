@@ -1,10 +1,16 @@
 package com.yoge.ad.service.search.index.creative;
 
+import com.google.common.collect.Lists;
 import com.yoge.ad.service.search.index.IndexAware;
+import com.yoge.ad.service.search.index.adUnit.AdUnitObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * DESC 创意索引实现
@@ -51,5 +57,20 @@ public class CreativeIndex implements IndexAware<Long, CreativeObject> {
         log.info("CreativeIndex, before delete the key set is {}", redisTemplate.keys(AD_CREATIVE_INDEX_PREFIX + "*"));
         redisTemplate.delete(AD_CREATIVE_INDEX_PREFIX + key);
         log.info("CreativeIndex, after delete the key set is {}", redisTemplate.keys(AD_CREATIVE_INDEX_PREFIX + "*"));
+    }
+
+    public List<CreativeObject> fetch(List<Long> creativeIdList) {
+        if (CollectionUtils.isEmpty(creativeIdList))
+            return Collections.emptyList();
+        List<CreativeObject> creativeObjectList = Lists.newArrayList();
+        creativeIdList.forEach(creativeId -> {
+            CreativeObject object = (CreativeObject) redisTemplate.boundValueOps(AD_CREATIVE_INDEX_PREFIX + creativeId).get();
+            if (object == null) {
+                log.error("redis中未找到对应CreativeObject, key : {}", AD_CREATIVE_INDEX_PREFIX + creativeId);
+                return;
+            }
+            creativeObjectList.add(object);
+        });
+        return creativeObjectList;
     }
 }

@@ -6,6 +6,9 @@ import com.yoge.ad.service.common.vo.CommonResponse;
 import com.yoge.ad.service.search.client.SponsorClient;
 import com.yoge.ad.service.search.client.vo.AdPlan;
 import com.yoge.ad.service.search.client.vo.AdPlanGetRequest;
+import com.yoge.ad.service.search.mediaSearch.ISearch;
+import com.yoge.ad.service.search.mediaSearch.vo.SearchRequest;
+import com.yoge.ad.service.search.mediaSearch.vo.SearchResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +34,9 @@ public class SearchController {
     @Autowired
     private SponsorClient sponsorClient;
 
+    @Autowired
+    private ISearch search;
+
     @PostMapping("/getAdPlanListByRibbon")
     @IgnoreResponseAdvice
     @SuppressWarnings("unchecked")
@@ -44,5 +50,11 @@ public class SearchController {
     public CommonResponse<List<AdPlan>> getAdPlanListByFeign(@RequestBody AdPlanGetRequest request) {
         log.info("ad-search: getAdPlanByFeign -> {}", JSON.toJSONString(request));
         return sponsorClient.getAdPlanListByIdList(request);
+    }
+
+    @PostMapping("/fetchAds")
+    public SearchResponse fetchAds(SearchRequest request) {
+        log.info("ad-search: fetch ads -> {}", JSON.toJSONString(request));
+        return search.fetchAds(request);
     }
 }

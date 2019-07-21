@@ -2,7 +2,7 @@ package com.yoge.ad.service.search.index.adUnit;
 
 public class AdUnitConstants {
 
-    public static class POSITION_TYPE {
+    public static class PositionType {
 
         /**
          * 开屏广告位

@@ -3,12 +3,14 @@ package com.yoge.ad.service.search.index.unitKeyword;
 import com.google.common.collect.Sets;
 import com.yoge.ad.service.search.index.IndexAware;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -105,8 +107,29 @@ public class UnitKeywordIndex implements IndexAware<String, Set<Long>> {
         log.info("UnitKeywordIndex, before delete the key set is {}", redisTemplate.keys(KEYWORD_UNIT_INDEX_PREFIX + "*"));
         redisTemplate.opsForSet().remove(KEYWORD_UNIT_INDEX_PREFIX + key, values.toArray());
         for (Long unitId : values) {
-            redisTemplate.opsForSet().remove(UNIT_KEYWORD_INDEX_PREFIX + unitId, key);
+//            redisTemplate.opsForSet().remove(UNIT_KEYWORD_INDEX_PREFIX + unitId, key);
+            // 优化
+            redisTemplate.boundSetOps(UNIT_KEYWORD_INDEX_PREFIX + unitId).remove(key);
         }
         log.info("UnitKeywordIndex, after delete the key set is {}", redisTemplate.keys(KEYWORD_UNIT_INDEX_PREFIX + "*"));
+    }
+
+    /**
+     * 用于匹配某个推广单元unitId 是否包含某些关键词List<String> keywords
+     *
+     * @param unitId
+     * @param keywords
+     * @return
+     */
+    public boolean match(Long unitId, List<String> keywords) {
+        if (redisTemplate.hasKey(UNIT_KEYWORD_INDEX_PREFIX + unitId)) {
+//            Set<Object> unitKeyWords  =redisTemplate.opsForSet().members(UNIT_KEYWORD_INDEX_PREFIX + unitId);
+            // 相比上面取出所有set，这里在初始时就绑定一个key
+            Set<Object> unitKeyWords = redisTemplate.boundSetOps(UNIT_KEYWORD_INDEX_PREFIX + unitId).members();
+            if (CollectionUtils.isNotEmpty(unitKeyWords)) {
+                return CollectionUtils.isSubCollection(keywords, unitKeyWords);
+            }
+        }
+        return false;
     }
 }

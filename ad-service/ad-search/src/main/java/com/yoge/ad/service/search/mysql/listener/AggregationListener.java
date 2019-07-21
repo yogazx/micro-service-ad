@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 /**
  * DESC
- * todo 当解析binlog发生中断时记录下当前position，这样重启时可以指定读取的position位置
+ * todo 当解析binlog发生中断时记录下当前position，这样重启时可以指定读取的position位置，position值可以写入Kafka或者redis
  * @author You Jia Ge
  * Created Time 2019/7/5
  */

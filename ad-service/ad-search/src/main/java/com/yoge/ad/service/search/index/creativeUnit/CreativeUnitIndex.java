@@ -1,10 +1,17 @@
 package com.yoge.ad.service.search.index.creativeUnit;
 
+import com.google.common.collect.Lists;
 import com.yoge.ad.service.search.index.IndexAware;
+import com.yoge.ad.service.search.index.adUnit.AdUnitObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * DESC 推广创意与推广单元关联索引实现
@@ -67,5 +74,24 @@ public class CreativeUnitIndex implements IndexAware<String, CreativeUnitObject>
         redisTemplate.opsForSet().remove(AD_CREATIVE_UNIT_INDEX_PREFIX + value.getAdId(), value.getUnitId());
         redisTemplate.opsForSet().remove(UNIT_AD_INDEX_PREFIX + value.getUnitId(), value.getAdId());
         log.info("CreativeUnitIndex, after delete the key set is {}", redisTemplate.keys(AD_UNIT_CREATIVE_INDEX_PREFIX + "*"));
+    }
+
+    /**
+     * 通过推广单元获取到创意对象ID
+     *
+     * @param adUnitObjectList
+     * @return
+     */
+    public List<Long> getCreativeIdsByAdUnitObject(List<AdUnitObject> adUnitObjectList) {
+        if (CollectionUtils.isEmpty(adUnitObjectList))
+            return Collections.emptyList();
+        List<Long> creativeIdList = Lists.newArrayList();
+        adUnitObjectList.forEach(adUnitObject -> {
+            Set<Object> creativeIdSet = redisTemplate.boundSetOps(UNIT_AD_INDEX_PREFIX + adUnitObject.getUnitId()).members();
+            if (CollectionUtils.isNotEmpty(creativeIdSet)) {
+                creativeIdSet.forEach(creativeId -> creativeIdList.add(Long.valueOf(creativeId.toString())));
+            }
+        });
+        return creativeIdList;
     }
 }
