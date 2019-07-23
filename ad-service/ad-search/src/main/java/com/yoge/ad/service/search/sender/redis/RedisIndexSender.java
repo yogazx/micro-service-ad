@@ -86,6 +86,9 @@ public class RedisIndexSender implements ISender {
                         case DBConstant.AD_CREATIVE_TABLE_INFO.COLUMN_ID:
                             adCreativeTable.setId(Long.valueOf(columnValue));
                             break;
+                        case DBConstant.AD_CREATIVE_TABLE_INFO.COLUMN_NAME:
+                            adCreativeTable.setName(columnValue);
+                            break;
                         case DBConstant.AD_CREATIVE_TABLE_INFO.COLUMN_AUDIT_STATUS:
                             adCreativeTable.setAuditStatus(Integer.valueOf(columnValue));
                             break;
